@@ -1,5 +1,7 @@
 package com.glumes.rxcamerakit;
 
+import android.view.SurfaceHolder;
+
 import com.glumes.rxcamerakit.camera.CameraInternal;
 
 import io.reactivex.Observable;
@@ -13,6 +15,8 @@ public class RxCameraKit {
 
 
     private CameraInternal mCamera;
+
+    private CameraBuilder mCameraBuilder;
 
     public Observable<CameraInternal> open() {
 
@@ -28,6 +32,34 @@ public class RxCameraKit {
                 }
             }
         });
+    }
+
+
+    /**
+     * 1 surfaceBuilder
+     * 2 camera parameter builder
+     * 3 orientation builder
+     * 4
+     *
+     *
+     * @param holder
+     * @param width
+     * @param height
+     * @return
+     */
+
+    public CameraBuilder with(SurfaceHolder holder, int width, int height) {
+
+        return mCameraBuilder;
+    }
+
+    public void setAspeto(){
+
+    }
+
+
+    public static class CameraBuilder {
+
     }
 
     public void getDefaultCamera() {
