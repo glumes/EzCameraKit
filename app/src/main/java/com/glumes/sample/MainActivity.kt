@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.util.Log
 import android.view.SurfaceView
+import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.request.RequestOptions
 import com.glumes.rxcamerakit.RxCameraKit
 import com.glumes.rxcamerakit.camera.CameraInternal
 import com.glumes.sample.util.PermissionsUtils
@@ -36,28 +39,39 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-        Glide
-                .with(this)
+        val imageView = findViewById<ImageView>(R.id.imageView)
+
+
+        Glide.with(this)
                 .load(R.drawable.ic_launcher_background)
-                .into(this)
+                .apply(
+                        RequestOptions.centerCropTransform().placeholder(R.drawable.ic_launcher_background)
+                                .error(R.drawable.ic_launcher_background)
+                                .priority(Priority.HIGH)
+//                        RequestOptions.circleCropTransform().
+                ).into(imageView)
 
 
-        Camera = CameraKit.with(surface)
-                .setFace()
-                .setRatio()
-                .enableFlash()
-                .setPreviewSize
-                .setPictureSize
-                .
+        val kit = RxCameraKit()
+
+        kit.open(0)
+                .with(mSurfaceView.holder)
+                .apply()
                 .build()
 
-
-        Camera.startPreview()
-        Camera.takePicture()
-        Camera.
-
-
-
+//        Camera = CameraKit.with(surface)
+//                .setFace()
+//                .setRatio()
+//                .enableFlash()
+//                .setPreviewSize
+//                .setPictureSize
+//                .
+//                .build()
+//
+//
+//        Camera.startPreview()
+//        Camera.takePicture()
+//        Camera.
 
     }
 
