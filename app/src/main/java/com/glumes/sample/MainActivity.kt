@@ -1,6 +1,7 @@
 package com.glumes.sample
 
 import android.Manifest
+import android.hardware.Camera
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -76,26 +77,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCameraAndPreview() {
-        mCameraKit
-                .open()
-                .flatMap(Function<CameraInternal, ObservableSource<CameraInternal>> {
-                    it.setDisplaySurface(mSurfaceView.holder)
-                    val cameraInternal = it
-                    return@Function Observable.create {
-                        it.onNext(cameraInternal)
-                        it.onComplete()
-                    }
-                })
-                .flatMap(Function<CameraInternal, ObservableSource<CameraInternal>> {
-                    it.startPreview()
-                    val cameraInternal = it
-                    return@Function Observable.create {
-                        it.onNext(cameraInternal)
-                        it.onComplete()
-                    }
-                })
-                .subscribe(Consumer {
-                    Log.d("RxCameraKit", "onNext")
-                })
+
+
+        var camrea = mCameraKit.open(0)
+                .with(mSurfaceView.holder)
+                .setAspect()
+                .enableFlash()
+                .build()
+
+
+//        mCameraKit
+//                .open()
+//                .flatMap(Function<CameraInternal, ObservableSource<CameraInternal>> {
+//                    it.setDisplaySurface(mSurfaceView.holder)
+//                    val cameraInternal = it
+//                    return@Function Observable.create {
+//                        it.onNext(cameraInternal)
+//                        it.onComplete()
+//                    }
+//                })
+//                .flatMap(Function<CameraInternal, ObservableSource<CameraInternal>> {
+//                    it.startPreview()
+//                    val cameraInternal = it
+//                    return@Function Observable.create {
+//                        it.onNext(cameraInternal)
+//                        it.onComplete()
+//                    }
+//                })
+//                .subscribe(Consumer {
+//                    Log.d("RxCameraKit", "onNext")
+//                })
     }
 }
