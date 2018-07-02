@@ -36,6 +36,10 @@ public class CameraEngine {
         return mCamera != null;
     }
 
+    public boolean isCameraOpened() {
+        return mCamera != null;
+    }
+
 
     public void setPreviewSurface(SurfaceView surfaceView) {
         setPreviewSurface(surfaceView.getHolder());
