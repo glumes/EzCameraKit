@@ -1,8 +1,11 @@
 package com.glumes.rxcamerakit;
 
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.TextureView;
 
 import java.io.IOException;
 
@@ -12,25 +15,29 @@ import java.io.IOException;
 
 public class RequestManager {
 
-    private Camera mCamera;
 
-    public RequestManager(Camera mCamera) {
-        this.mCamera = mCamera;
+    public RequestManager(int cameraId) {
+        CameraEngine.getInstance().openCamera(cameraId);
+    }
+
+    public RequestBuilder with(SurfaceView surface) {
+        CameraEngine.getInstance().setPreviewSurface(surface);
+        return new RequestBuilder();
+    }
+
+    public RequestBuilder with(TextureView textureView) {
+        CameraEngine.getInstance().setPreviewTexture(textureView);
+        return new RequestBuilder();
     }
 
     public RequestBuilder with(SurfaceHolder holder) {
-
-        try {
-            mCamera.setPreviewDisplay(holder);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        CameraEngine.getInstance().setPreviewSurface(holder);
         return new RequestBuilder();
     }
 
-    public RequestBuilder with(SurfaceView surfaceView) {
+    public RequestBuilder with(SurfaceTexture texture) {
+        CameraEngine.getInstance().setPreviewTexture(texture);
         return new RequestBuilder();
     }
-
 
 }

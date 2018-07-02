@@ -1,10 +1,5 @@
 package com.glumes.rxcamerakit;
 
-import android.hardware.Camera;
-import android.view.SurfaceHolder;
-
-import com.glumes.rxcamerakit.camera.CameraInternal;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -13,26 +8,6 @@ import io.reactivex.ObservableOnSubscribe;
  * Created by glumes on 19/06/2018
  */
 public class RxCameraKit {
-
-
-    private CameraInternal mCamera;
-
-
-//    public Observable<CameraInternal> open() {
-//
-//        return Observable.create(new ObservableOnSubscribe<CameraInternal>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<CameraInternal> emitter) throws Exception {
-//                mCamera = new CameraInternal();
-//                if (mCamera.openCamera()) {
-//                    emitter.onNext(mCamera);
-//                    emitter.onComplete();
-//                } else {
-//                    emitter.onError(new Throwable("open camera failed"));
-//                }
-//            }
-//        });
-//    }
 
 
     /**
@@ -54,9 +29,8 @@ public class RxCameraKit {
      */
     public RequestManager open(int isFront) {
 
-        Camera camera = Camera.open();
 
-        return new RequestManager(camera);
+        return new RequestManager(isFront);
     }
 
 
