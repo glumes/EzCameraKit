@@ -150,4 +150,8 @@ public class ConfigOptions {
     Camera.Parameters build() {
         return mParameters;
     }
+
+    void reset() {
+        setAspectRatio(mAspectRatio);
+    }
 }

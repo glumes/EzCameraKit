@@ -69,6 +69,21 @@ public class CameraEngine {
         mCamera.startPreview();
     }
 
+    public void changeCameara(int cameraId) {
+
+        if (!isCameraOpened()) {
+            return;
+        }
+
+        mCamera.setPreviewCallback(null);
+        mCamera.stopPreview();
+        mCamera.release();
+
+        openCamera(cameraId);
+        ConfigOptions.getCameraParameter().reset();
+        startPreview();
+
+    }
 
     public void setAspectRatio(AspectRatio aspectRatio) {
         ConfigOptions.getCameraParameter().setAspectRatio(aspectRatio);
