@@ -1,5 +1,7 @@
 package com.glumes.rxcamerakit.utils;
 
+import android.hardware.Camera;
+
 import com.glumes.rxcamerakit.base.AspectRatio;
 import com.glumes.rxcamerakit.base.Size;
 import com.glumes.rxcamerakit.base.SizeMap;
@@ -108,4 +110,13 @@ public class CameraUtil {
         return aspectRatio;
     }
 
+
+    public static int calculateCameraRotation(int cameraFacing, int orientation, int screenOrientationDegrees) {
+        if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            return (orientation + screenOrientationDegrees) % 360;
+        } else {
+            final int landscapeFlip = isLandscape(screenOrientationDegrees) ? 180 : 0;
+            return (orientation + screenOrientationDegrees + landscapeFlip) % 360;
+        }
+    }
 }

@@ -20,6 +20,9 @@ public class CameraEngine {
 
     private Camera.PreviewCallback mPreviewCallback;
 
+    private int mCameraId;
+
+    private Camera.CameraInfo mCameraInfo;
 
     private static final String TAG = "CameraEngine";
 
@@ -32,14 +35,34 @@ public class CameraEngine {
     }
 
     public boolean openCamera(int cameraId) {
+        mCameraId = cameraId;
+        initCameraInfo();
         mCamera = Camera.open(cameraId);
         return mCamera != null;
+    }
+
+    private void initCameraInfo() {
+        int count = Camera.getNumberOfCameras();
+        for (int i = 0; i < count; i++) {
+            Camera.getCameraInfo(i, mCameraInfo);
+            if (mCameraInfo.facing == mCameraId) {
+                mCameraId = i;
+            }
+        }
     }
 
     public boolean isCameraOpened() {
         return mCamera != null;
     }
 
+
+    public int getCameraId() {
+        return mCameraId;
+    }
+
+    public Camera.CameraInfo getCameraInfo() {
+        return mCameraInfo;
+    }
 
     public void setPreviewSurface(SurfaceView surfaceView) {
         setPreviewSurface(surfaceView.getHolder());
