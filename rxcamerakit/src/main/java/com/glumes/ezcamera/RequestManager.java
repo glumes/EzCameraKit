@@ -1,4 +1,4 @@
-package com.glumes.rxcamerakit;
+package com.glumes.ezcamera;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;

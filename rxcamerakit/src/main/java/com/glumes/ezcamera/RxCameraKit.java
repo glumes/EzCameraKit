@@ -1,4 +1,4 @@
-package com.glumes.rxcamerakit;
+package com.glumes.ezcamera;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

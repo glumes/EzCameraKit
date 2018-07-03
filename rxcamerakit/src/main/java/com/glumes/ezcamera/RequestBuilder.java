@@ -1,4 +1,4 @@
-package com.glumes.rxcamerakit;
+package com.glumes.ezcamera;
 
 
 /**

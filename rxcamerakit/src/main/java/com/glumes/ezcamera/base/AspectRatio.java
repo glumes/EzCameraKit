@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.glumes.rxcamerakit.base;
+package com.glumes.ezcamera.base;
 
 import android.os.Parcel;
 import android.os.Parcelable;

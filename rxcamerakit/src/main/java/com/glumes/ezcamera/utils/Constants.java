@@ -1,6 +1,6 @@
-package com.glumes.rxcamerakit.utils;
+package com.glumes.ezcamera.utils;
 
-import com.glumes.rxcamerakit.base.AspectRatio;
+import com.glumes.ezcamera.base.AspectRatio;
 
 /**
  * Created by glumes on 02/07/2018

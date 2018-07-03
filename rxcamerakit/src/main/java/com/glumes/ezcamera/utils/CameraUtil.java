@@ -1,10 +1,10 @@
-package com.glumes.rxcamerakit.utils;
+package com.glumes.ezcamera.utils;
 
 import android.hardware.Camera;
 
-import com.glumes.rxcamerakit.base.AspectRatio;
-import com.glumes.rxcamerakit.base.Size;
-import com.glumes.rxcamerakit.base.SizeMap;
+import com.glumes.ezcamera.base.AspectRatio;
+import com.glumes.ezcamera.base.Size;
+import com.glumes.ezcamera.base.SizeMap;
 
 import java.util.ArrayList;
 import java.util.List;

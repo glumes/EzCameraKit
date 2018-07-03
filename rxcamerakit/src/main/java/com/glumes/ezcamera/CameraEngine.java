@@ -1,4 +1,4 @@
-package com.glumes.rxcamerakit;
+package com.glumes.ezcamera;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -7,7 +7,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
-import com.glumes.rxcamerakit.base.AspectRatio;
+import com.glumes.ezcamera.base.AspectRatio;
 
 import java.io.IOException;
 

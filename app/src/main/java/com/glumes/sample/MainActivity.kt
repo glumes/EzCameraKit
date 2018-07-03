@@ -9,10 +9,10 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.request.RequestOptions
-import com.glumes.rxcamerakit.CameraEngine
-import com.glumes.rxcamerakit.ConfigOptions
-import com.glumes.rxcamerakit.RxCameraKit
-import com.glumes.rxcamerakit.base.AspectRatio
+import com.glumes.ezcamera.CameraEngine
+import com.glumes.ezcamera.ConfigOptions
+import com.glumes.ezcamera.RxCameraKit
+import com.glumes.ezcamera.base.AspectRatio
 import com.glumes.sample.util.PermissionsUtils
 
 class MainActivity : AppCompatActivity() {
