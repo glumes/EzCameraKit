@@ -7,7 +7,7 @@ import io.reactivex.ObservableOnSubscribe;
 /**
  * Created by glumes on 19/06/2018
  */
-public class RxCameraKit {
+public class EzCameraKit {
 
 
     /**
@@ -27,7 +27,7 @@ public class RxCameraKit {
      *
      * @return
      */
-    public RequestManager open(int isFront) {
+    public static RequestManager open(int isFront) {
 
 
         return new RequestManager(isFront);
@@ -35,7 +35,7 @@ public class RxCameraKit {
 
 
     /**
-     * RxCameraKit open 创建 RequestManager，open 指打开相机操作,传入前置还是后置
+     * EzCameraKit open 创建 RequestManager，open 指打开相机操作,传入前置还是后置
      * 然后 RequestManager 里面的 with 方法 传入 Surface 或者 SurfaceHolder 或者 GLSurfaceView 的内容,返回 RequestBuilder
      * RequestBuilder 里面设置各种参数，包括分辨率，尺寸，角度，闪光灯等等
      * 最后通过 build 方法构建最终相机
@@ -44,6 +44,11 @@ public class RxCameraKit {
      * @return
      */
 
+
+    /**
+     * RequestBuilder 里面包含有 RequestManager ,RequestManager 里面设置有默认的请求选项 RequestOptions
+     *
+     */
 
     /**
      * 相机对象 又包含一些设置方法

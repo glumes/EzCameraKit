@@ -119,4 +119,12 @@ public class CameraUtil {
             return (orientation + screenOrientationDegrees + landscapeFlip) % 360;
         }
     }
+
+    public static int calculateDisplayOrientation(int cameraFacing, int orientation, int screenOrientationDegrees) {
+        if (cameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            return (360 - (orientation + screenOrientationDegrees) % 360) % 360;
+        } else {
+            return (orientation - screenOrientationDegrees + 360) % 360;
+        }
+    }
 }

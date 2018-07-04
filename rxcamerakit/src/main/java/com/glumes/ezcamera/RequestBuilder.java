@@ -14,8 +14,8 @@ public class RequestBuilder {
         return new RequestBuilder();
     }
 
-    public CameraEngine build() {
-        return CameraEngine.getInstance();
+    public EzCamera build() {
+        return EzCamera.getInstance();
     }
 
 }

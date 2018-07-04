@@ -31,7 +31,7 @@ public class ConfigOptions {
     private AspectRatio mAspectRatio = AspectRatio.of(4, 3);
     private boolean isAutoFocus;
     private int mFlashMode;
-    private int mDisplayOrientation = Constants.LANDSCAPE_270;
+    public static int mDisplayOrientation = Constants.LANDSCAPE_90;
 
 
     private static final SparseArrayCompat<String> FLASH_MODES = new SparseArrayCompat<>();
@@ -46,7 +46,7 @@ public class ConfigOptions {
 
 
     public static ConfigOptions getCameraParameter() {
-        mParameters = CameraEngine.getInstance().getParameters();
+        mParameters = EzCamera.getInstance().getParameters();
         return new ConfigOptions();
     }
 
@@ -101,9 +101,9 @@ public class ConfigOptions {
         mParameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
         mParameters.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
 
-//        mParameters.setRotation(CameraUtil.calculateCameraRotation(
-//                CameraEngine.getInstance().getCameraId(), CameraEngine.getInstance().getCameraInfo().orientation, mDisplayOrientation
-//        ));
+        mParameters.setRotation(CameraUtil.calculateCameraRotation(
+                EzCamera.getInstance().getCameraId(), EzCamera.getInstance().getCameraInfo().orientation, mDisplayOrientation
+        ));
 
     }
 
@@ -158,5 +158,9 @@ public class ConfigOptions {
 
     void reset() {
         setAspectRatio(mAspectRatio);
+    }
+
+    void apply() {
+
     }
 }

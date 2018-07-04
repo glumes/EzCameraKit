@@ -8,13 +8,14 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 
 import com.glumes.ezcamera.base.AspectRatio;
+import com.glumes.ezcamera.utils.CameraUtil;
 
 import java.io.IOException;
 
 /**
  * Created by glumes on 02/07/2018
  */
-public class CameraEngine {
+public class EzCamera {
 
     private Camera mCamera = null;
 
@@ -22,15 +23,15 @@ public class CameraEngine {
 
     private int mCameraId;
 
-    private Camera.CameraInfo mCameraInfo;
+    private Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
 
-    private static final String TAG = "CameraEngine";
+    private static final String TAG = "EzCamera";
 
     private static class CameraEngineHolder {
-        private static CameraEngine mInstance = new CameraEngine();
+        private static EzCamera mInstance = new EzCamera();
     }
 
-    public static CameraEngine getInstance() {
+    public static EzCamera getInstance() {
         return CameraEngineHolder.mInstance;
     }
 
@@ -89,6 +90,9 @@ public class CameraEngine {
     }
 
     public void startPreview() {
+        mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
+                ConfigOptions.mDisplayOrientation));
+
         mCamera.startPreview();
     }
 
