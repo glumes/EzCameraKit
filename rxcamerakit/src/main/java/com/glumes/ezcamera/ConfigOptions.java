@@ -33,7 +33,6 @@ public class ConfigOptions {
     private int mFlashMode;
     public static int mDisplayOrientation = Constants.LANDSCAPE_90;
 
-
     private static final SparseArrayCompat<String> FLASH_MODES = new SparseArrayCompat<>();
 
     static {

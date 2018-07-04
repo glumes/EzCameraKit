@@ -27,6 +27,7 @@ public class EzCamera {
 
     private static final String TAG = "EzCamera";
 
+
     private static class CameraEngineHolder {
         private static EzCamera mInstance = new EzCamera();
     }
@@ -40,6 +41,11 @@ public class EzCamera {
         initCameraInfo();
         mCamera = Camera.open(cameraId);
         return mCamera != null;
+    }
+
+    public boolean open(RequestOptions mConfigOptions) {
+
+        return true;
     }
 
     private void initCameraInfo() {
@@ -74,6 +80,18 @@ public class EzCamera {
             mCamera.setPreviewDisplay(surfaceHolder);
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public <T> void startR(T b) {
+//        mCamera.setPreviewDisplay((SurfaceHolder) T);
+        if (b instanceof String) {
+
+        }
+        try {
+            mCamera.setPreviewDisplay((SurfaceHolder) b);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

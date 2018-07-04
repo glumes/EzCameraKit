@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import android.widget.Button
 import android.widget.ImageView
 import com.glumes.ezcamera.ConfigOptions
 import com.glumes.ezcamera.EzCameraKit
@@ -28,7 +29,6 @@ class CameraActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.imageView)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
@@ -39,14 +39,15 @@ class CameraActivity : AppCompatActivity() {
             }
 
             override fun surfaceDestroyed(holder: SurfaceHolder?) {
+
             }
 
             override fun surfaceCreated(holder: SurfaceHolder?) {
+
             }
 
         })
     }
-
 
     fun startPreview(holder: SurfaceHolder?, width: Int, height: Int) {
         EzCameraKit.open(0)

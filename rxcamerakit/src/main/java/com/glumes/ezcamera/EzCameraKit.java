@@ -1,5 +1,9 @@
 package com.glumes.ezcamera;
 
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.TextureView;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -29,11 +33,34 @@ public class EzCameraKit {
      */
     public static RequestManager open(int isFront) {
 
-
         return new RequestManager(isFront);
     }
 
 
+    public static RequestManager with(SurfaceView surface) {
+
+        return new RequestManager(0);
+    }
+
+    public static RequestManager with(TextureView textureView) {
+
+
+        return new RequestManager(0);
+    }
+
+    public static <T> RequestManager with(T surface) {
+        return new RequestManager<SurfaceHolder>((SurfaceHolder) surface);
+    }
+
+
+    /**
+     * 泛型方法，检查设置的类型，类型错误就抛出异常。
+     *
+     * @return
+     */
+    private boolean checkType() {
+        return false;
+    }
     /**
      * EzCameraKit open 创建 RequestManager，open 指打开相机操作,传入前置还是后置
      * 然后 RequestManager 里面的 with 方法 传入 Surface 或者 SurfaceHolder 或者 GLSurfaceView 的内容,返回 RequestBuilder

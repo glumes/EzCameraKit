@@ -6,15 +6,16 @@ import android.hardware.Camera
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.util.Log
 import android.view.SurfaceView
 import android.widget.Button
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
-import com.bumptech.glide.request.RequestOptions
 import com.glumes.ezcamera.EzCamera
 import com.glumes.ezcamera.ConfigOptions
 import com.glumes.ezcamera.EzCameraKit
+import com.glumes.ezcamera.RequestOptions
 import com.glumes.ezcamera.base.AspectRatio
 import com.glumes.sample.util.PermissionsUtils
 
@@ -49,19 +50,25 @@ class MainActivity : AppCompatActivity() {
         val imageView = findViewById<ImageView>(R.id.imageView)
 
 
-        Glide.with(this)
-                .load(R.drawable.ic_launcher_background)
-                .apply(
-                        RequestOptions.centerCropTransform().placeholder(R.drawable.ic_launcher_background)
-                                .error(R.drawable.ic_launcher_background)
-                                .priority(Priority.HIGH)
-                ).into(imageView)
+//        Glide.with(this)
+//                .load(R.drawable.ic_launcher_background)
+//                .apply(
+//                        RequestOptions.centerCropTransform().placeholder(R.drawable.ic_launcher_background)
+//                                .error(R.drawable.ic_launcher_background)
+//                                .priority(Priority.HIGH)
+//                ).into(imageView)
 
         Glide.with(this)
 //                .applyDefaultRequestOptions()
                 .load(R.drawable.ic_launcher_background)
 //                .load()
 
+        var camera = EzCameraKit
+                .with(mSurfaceView)
+                .apply(RequestOptions.openBackCamera().setWidth(2))
+                .open()
+
+        camera.startPreview()
 
     }
 
@@ -76,6 +83,13 @@ class MainActivity : AppCompatActivity() {
 //                )
 //                .into()
 //        mEngine?.startPreview()
+
+        startR(3)
+
+    }
+
+    fun <T> startR(b: T) {
+        //        mCamera.setPreviewDisplay((SurfaceHolder) T);
     }
 
     override fun onPause() {
