@@ -1,6 +1,10 @@
 package com.glumes.ezcamera;
 
 
+import android.view.SurfaceHolder;
+
+import java.io.IOException;
+
 /**
  * Created by glumes on 30/06/2018
  */
@@ -15,27 +19,25 @@ public class RequestBuilder<T> {
 
     public RequestBuilder(T displaySurface) {
         mDisplaySurface = displaySurface;
+
     }
 
-//    public RequestBuilder apply(ConfigOptions configOptions) {
-//        mConfigOptions = configOptions;
-//        return this;
-//    }
-
     public RequestBuilder apply(RequestOptions requestOptions) {
+
         mRequestOptions = requestOptions;
         return this;
     }
 
 
-    public EzCamera build() {
-        return EzCamera.getInstance();
-    }
-
     public EzCamera open() {
-        if (EzCamera.getInstance().open(mRequestOptions)) {
-            return EzCamera.getInstance();
-        }
-        return null;
+        // EzCamera.getInstance.setPreview()
+//        if () {
+//            return EzCamera.getInstance();
+//        }
+
+        boolean result = EzCamera.getInstance().open(mRequestOptions, mDisplaySurface);
+
+
+        return EzCamera.getInstance();
     }
 }

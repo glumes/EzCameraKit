@@ -63,12 +63,12 @@ class MainActivity : AppCompatActivity() {
                 .load(R.drawable.ic_launcher_background)
 //                .load()
 
-        var camera = EzCameraKit
-                .with(mSurfaceView)
-                .apply(RequestOptions.openBackCamera().setWidth(2))
-                .open()
-
-        camera.startPreview()
+//        var camera = EzCameraKit
+//                .with(mSurfaceView)
+//                .apply(RequestOptions.openBackCamera().setWidth(2))
+//                .open()
+//
+//        camera.startPreview()
 
     }
 

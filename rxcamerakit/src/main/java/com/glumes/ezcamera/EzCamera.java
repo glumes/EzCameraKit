@@ -2,15 +2,21 @@ package com.glumes.ezcamera;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
 import com.glumes.ezcamera.base.AspectRatio;
+import com.glumes.ezcamera.base.Size;
+import com.glumes.ezcamera.base.SizeMap;
 import com.glumes.ezcamera.utils.CameraUtil;
+import com.glumes.ezcamera.utils.Constants;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Created by glumes on 02/07/2018
@@ -26,6 +32,23 @@ public class EzCamera {
     private Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
 
     private static final String TAG = "EzCamera";
+
+    private RequestOptions mRequestOptions;
+
+    private Camera.Parameters mParameters;
+
+    private final SizeMap mPreviewSizes = new SizeMap();
+    private final SizeMap mPictureSizes = new SizeMap();
+
+    private static final SparseArrayCompat<String> FLASH_MODES = new SparseArrayCompat<>();
+
+    static {
+        FLASH_MODES.put(Constants.FLASH_OFF, Camera.Parameters.FLASH_MODE_OFF);
+        FLASH_MODES.put(Constants.FLASH_ON, Camera.Parameters.FLASH_MODE_ON);
+        FLASH_MODES.put(Constants.FLASH_TORCH, Camera.Parameters.FLASH_MODE_TORCH);
+        FLASH_MODES.put(Constants.FLASH_AUTO, Camera.Parameters.FLASH_MODE_AUTO);
+        FLASH_MODES.put(Constants.FLASH_RED_EYE, Camera.Parameters.FLASH_MODE_RED_EYE);
+    }
 
 
     private static class CameraEngineHolder {
@@ -43,10 +66,67 @@ public class EzCamera {
         return mCamera != null;
     }
 
-    public boolean open(RequestOptions mConfigOptions) {
+    public boolean open(RequestOptions requestOptions) {
+        mRequestOptions = requestOptions;
+        mCamera = Camera.open(mRequestOptions.mCameraId);
 
         return true;
     }
+
+    public <T> boolean open(RequestOptions requestOptions, T surfaceType) {
+
+        mRequestOptions = requestOptions;
+        mCamera = Camera.open(mRequestOptions.mCameraId);
+        Camera.getCameraInfo(mCameraId, mCameraInfo);
+        mParameters = mCamera.getParameters();
+        initParameters();
+        adjustCameraParameters();
+
+        try {
+            if (surfaceType instanceof SurfaceHolder) {
+                mCamera.setPreviewDisplay((SurfaceHolder) surfaceType);
+            } else {
+                mCamera.setPreviewTexture((SurfaceTexture) surfaceType);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    private void initParameters() {
+        mPreviewSizes.clear();
+        for (Camera.Size size : mParameters.getSupportedPreviewSizes()) {
+            mPreviewSizes.add(new Size(size.width, size.height));
+        }
+        mPictureSizes.clear();
+        for (Camera.Size size : mParameters.getSupportedPictureSizes()) {
+            mPictureSizes.add(new Size(size.width, size.height));
+        }
+        CameraUtil.adjustPreviewSizes(mPreviewSizes, mPictureSizes);
+    }
+
+
+    private void adjustCameraParameters() {
+        SortedSet<Size> sizes = CameraUtil.calculateSizesOfAspect(mRequestOptions.mAspectRatio, mPreviewSizes, mPictureSizes);
+
+        Size previewSize = CameraUtil.calculatePreviewSize(sizes, mRequestOptions.mSize.getWidth(), mRequestOptions.mSize.getHeight(), mRequestOptions.mDisplayOrientation);
+
+        Size pictureSize = CameraUtil.calculatePictureSize(mPictureSizes, mRequestOptions.mAspectRatio);
+
+        mParameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
+        mParameters.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
+        mParameters.setRotation(CameraUtil.calculateCameraRotation(
+                mCameraId, mCameraInfo.orientation, mRequestOptions.mDisplayOrientation
+        ));
+        setAutoFocus(mRequestOptions.mAutoFocus);
+        setFlashMode(mRequestOptions.mFlashMode);
+        mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
+                mRequestOptions.mDisplayOrientation));
+    }
+
 
     private void initCameraInfo() {
         int count = Camera.getNumberOfCameras();
@@ -62,7 +142,6 @@ public class EzCamera {
         return mCamera != null;
     }
 
-
     public int getCameraId() {
         return mCameraId;
     }
@@ -71,81 +150,58 @@ public class EzCamera {
         return mCameraInfo;
     }
 
-    public void setPreviewSurface(SurfaceView surfaceView) {
-        setPreviewSurface(surfaceView.getHolder());
-    }
-
-    public void setPreviewSurface(SurfaceHolder surfaceHolder) {
-        try {
-            mCamera.setPreviewDisplay(surfaceHolder);
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    public <T> void startR(T b) {
-//        mCamera.setPreviewDisplay((SurfaceHolder) T);
-        if (b instanceof String) {
-
-        }
-        try {
-            mCamera.setPreviewDisplay((SurfaceHolder) b);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setPreviewTexture(TextureView textureView) {
-        setPreviewTexture(textureView.getSurfaceTexture());
-    }
-
-    public void setPreviewTexture(SurfaceTexture surfaceTexture) {
-        try {
-            mCamera.setPreviewTexture(surfaceTexture);
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    public void startPreview() {
-        mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
-                ConfigOptions.mDisplayOrientation));
-
-        mCamera.startPreview();
-    }
-
     public void changeCameara(int cameraId) {
 
         if (!isCameraOpened()) {
             return;
         }
-
         mCamera.setPreviewCallback(null);
         mCamera.stopPreview();
         mCamera.release();
 
         openCamera(cameraId);
-        ConfigOptions.getCameraParameter().reset();
         startPreview();
-
     }
 
     public void setAspectRatio(AspectRatio aspectRatio) {
         ConfigOptions.getCameraParameter().setAspectRatio(aspectRatio);
     }
 
-    public void setFlashMode(int flashMode) {
-        ConfigOptions.getCameraParameter().setFlashMode(flashMode);
+    public void setFlashMode(int flash) {
+        mRequestOptions.mFlashMode = flash;
+        List<String> modes = mParameters.getSupportedFlashModes();
+        String mode = FLASH_MODES.get(flash);
+        if (modes != null && modes.contains(mode)) {
+            mParameters.setFlashMode(mode);
+            mRequestOptions.mFlashMode = flash;
+        }
+        String currentMode = FLASH_MODES.get(mRequestOptions.mFlashMode);
+        if (modes == null || !modes.contains(currentMode)) {
+            mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            mRequestOptions.mFlashMode = Constants.FLASH_OFF;
+        }
     }
 
     public void setAutoFocus(boolean autoFocus) {
-        ConfigOptions.getCameraParameter().setAutoFocus(autoFocus);
+        mRequestOptions.mAutoFocus = autoFocus;
+        final List<String> modes = mParameters.getSupportedFocusModes();
+        if (autoFocus && modes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        } else if (modes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
+            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+        } else if (modes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
+            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+        } else {
+            mParameters.setFocusMode(modes.get(0));
+        }
     }
 
+    public void setDisplayOrientation(int degrees) {
+        mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
+                ConfigOptions.mDisplayOrientation));
+    }
 
-    public void startPreview(Camera.PreviewCallback previewCallback) {
-        mPreviewCallback = previewCallback;
-        mCamera.setPreviewCallback(mPreviewCallback);
+    public void startPreview() {
         mCamera.startPreview();
     }
 
@@ -165,12 +221,5 @@ public class EzCamera {
         });
     }
 
-    Camera.Parameters getParameters() {
-        return mCamera.getParameters();
-    }
-
-    public void release() {
-        mCamera = null;
-    }
 }
 

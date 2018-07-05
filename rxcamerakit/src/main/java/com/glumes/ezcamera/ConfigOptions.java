@@ -45,7 +45,6 @@ public class ConfigOptions {
 
 
     public static ConfigOptions getCameraParameter() {
-        mParameters = EzCamera.getInstance().getParameters();
         return new ConfigOptions();
     }
 

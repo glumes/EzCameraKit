@@ -1,5 +1,6 @@
 package com.glumes.ezcamera;
 
+import android.graphics.SurfaceTexture;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
@@ -44,14 +45,23 @@ public class EzCameraKit {
 
     public static RequestManager with(TextureView textureView) {
 
-
         return new RequestManager(0);
     }
 
     public static <T> RequestManager with(T surface) {
-        return new RequestManager<SurfaceHolder>((SurfaceHolder) surface);
+        if (surface instanceof SurfaceHolder) {
+            return new RequestManager<>((SurfaceHolder) surface);
+        } else {
+            return new RequestManager<>((SurfaceTexture) surface);
+        }
     }
 
+
+//    public static <T> RequestBuilder with(T surface) {
+//
+//        return new RequestBuilder<>((SurfaceHolder) surface);
+//    }
+//
 
     /**
      * 泛型方法，检查设置的类型，类型错误就抛出异常。

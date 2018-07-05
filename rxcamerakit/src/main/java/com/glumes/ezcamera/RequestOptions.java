@@ -3,31 +3,32 @@ package com.glumes.ezcamera;
 import android.hardware.Camera;
 
 import com.glumes.ezcamera.base.AspectRatio;
+import com.glumes.ezcamera.base.Size;
 
 /**
  * @Author glumes
  */
-public class RequestOptions<T> {
+public class RequestOptions {
 
-    private T mDisplaySurface;
+    int mCameraId;
 
-    private int mCameraId;
+    AspectRatio mAspectRatio;
 
-    private AspectRatio mAspectRatio;
+    int mDisplayOrientation;
 
-    private int mDisplayOrientation;
+    boolean mMuteMode;
 
-    private int mIsAutoFocus;
+    Size mSize;
 
-    private int mDisplayWidth;
+    boolean mIsEnableFlash;
 
-    private int mDisplayHeight;
+    int mFlashMode;
 
-    private boolean mIsMuteMode;
+    OnPictureTaken mOnPictureTaken;
 
-    private boolean mIsEnableFlash;
+    boolean mAutoFocus;
 
-    private RequestOptions(int cameraId) {
+    RequestOptions(int cameraId) {
         mCameraId = cameraId;
     }
 
@@ -39,9 +40,43 @@ public class RequestOptions<T> {
         return new RequestOptions(Camera.CameraInfo.CAMERA_FACING_FRONT);
     }
 
-    public RequestOptions setWidth(int width) {
-        mDisplayWidth = width;
+    public RequestOptions size(Size size) {
+        mSize = size;
         return this;
     }
 
+    public RequestOptions flashMode(int mode) {
+        mFlashMode = mode;
+        return this;
+    }
+
+    public RequestOptions setAspectRatio(AspectRatio aspectRatio) {
+        mAspectRatio = aspectRatio;
+        return this;
+    }
+
+    public RequestOptions muteMode(boolean mute) {
+        mMuteMode = mute;
+        return this;
+    }
+
+    public RequestOptions autoFocus(boolean autoFocus) {
+        mAutoFocus = autoFocus;
+        return this;
+    }
+
+    public RequestOptions enableFlash(boolean flash) {
+        mIsEnableFlash = flash;
+        return this;
+    }
+
+    public RequestOptions displayOrientation(int degree) {
+        mDisplayOrientation = degree;
+        return this;
+    }
+
+    public RequestOptions callback(OnPictureTaken callback) {
+        mOnPictureTaken = callback;
+        return this;
+    }
 }

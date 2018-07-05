@@ -12,13 +12,7 @@ import android.view.TextureView;
 public class RequestManager<T> {
 
 
-    /**
-     * defaultRequestOptions
-     *
-     * @param cameraId
-     */
     private T mDisplaySurface;
-
 
     public RequestManager(int cameraId) {
         EzCamera.getInstance().openCamera(cameraId);
@@ -28,32 +22,16 @@ public class RequestManager<T> {
         mDisplaySurface = surface;
     }
 
-    public RequestBuilder with(SurfaceView surface) {
-        // 应该在 with 方法之前创建好 RequestBuilder ，然后把 SurfaceView 传递给 RequestBuilder， 然后返回 RequestBuilder
-        // RequestBuilder 持有 RequestManager  的引用
-        //
-        EzCamera.getInstance().setPreviewSurface(surface);
-        return new RequestBuilder(mDisplaySurface);
-    }
-
-    public RequestBuilder with(TextureView textureView) {
-        EzCamera.getInstance().setPreviewTexture(textureView);
-        return new RequestBuilder(mDisplaySurface);
-    }
-
-    public RequestBuilder with(SurfaceHolder holder) {
-        EzCamera.getInstance().setPreviewSurface(holder);
-        return new RequestBuilder(mDisplaySurface);
-    }
-
-    public RequestBuilder with(SurfaceTexture texture) {
-        EzCamera.getInstance().setPreviewTexture(texture);
-        return new RequestBuilder(mDisplaySurface);
-    }
-
     public RequestBuilder apply(RequestOptions requestOptions) {
-        RequestBuilder builder = new RequestBuilder(mDisplaySurface);
-        builder.apply(requestOptions);
+
+        RequestBuilder builder;
+        if (mDisplaySurface instanceof SurfaceHolder) {
+            builder = new RequestBuilder<>((SurfaceHolder) mDisplaySurface);
+            builder.apply(requestOptions);
+        } else {
+            builder = new RequestBuilder<>((SurfaceTexture) mDisplaySurface);
+            builder.apply(requestOptions);
+        }
         return builder;
     }
 }
