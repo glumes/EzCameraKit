@@ -11,19 +11,15 @@ import android.view.TextureView;
 
 public class RequestManager<T> {
 
-
     private T mDisplaySurface;
 
-    public RequestManager(int cameraId) {
-        EzCamera.getInstance().openCamera(cameraId);
-    }
+    private RequestOptions mDefaultRequestOptions;
 
-    public RequestManager(T surface) {
+    RequestManager(T surface) {
         mDisplaySurface = surface;
     }
 
     public RequestBuilder apply(RequestOptions requestOptions) {
-
         RequestBuilder builder;
         if (mDisplaySurface instanceof SurfaceHolder) {
             builder = new RequestBuilder<>((SurfaceHolder) mDisplaySurface);

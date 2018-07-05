@@ -2,21 +2,15 @@ package com.glumes.sample
 
 import android.Manifest
 import android.content.Intent
-import android.hardware.Camera
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.SurfaceView
 import android.widget.Button
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
 import com.glumes.ezcamera.EzCamera
-import com.glumes.ezcamera.ConfigOptions
 import com.glumes.ezcamera.EzCameraKit
-import com.glumes.ezcamera.RequestOptions
-import com.glumes.ezcamera.base.AspectRatio
 import com.glumes.sample.util.PermissionsUtils
 
 class MainActivity : AppCompatActivity() {
@@ -44,7 +38,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, CameraActivity::class.java))
             }
 
+            findViewById<Button>(R.id.button3).setOnClickListener {
+                startActivity(Intent(this, Camera2Activity::class.java))
+            }
+
         })
+
 
 
         val imageView = findViewById<ImageView>(R.id.imageView)

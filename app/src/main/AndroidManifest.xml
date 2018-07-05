@@ -23,12 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CameraActivity"
-            android:theme="@style/Theme.Design.Light.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+        <activity android:name=".Camera2Activity"></activity>
     </application>
 
 </manifest>

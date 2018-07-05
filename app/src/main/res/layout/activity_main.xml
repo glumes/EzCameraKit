@@ -7,7 +7,7 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <SurfaceView
+    <com.glumes.sample.AutoFitSurfaceView
         android:id="@+id/surfaceView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -51,4 +51,13 @@
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button" />
 </android.support.constraint.ConstraintLayout>

@@ -99,9 +99,9 @@ public class ConfigOptions {
         mParameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
         mParameters.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
 
-        mParameters.setRotation(CameraUtil.calculateCameraRotation(
-                EzCamera.getInstance().getCameraId(), EzCamera.getInstance().getCameraInfo().orientation, mDisplayOrientation
-        ));
+//        mParameters.setRotation(CameraUtil.calculateCameraRotation(
+//                EzCamera.getInstance().getCameraId(), EzCamera.getInstance().getCameraInfo().orientation, mDisplayOrientation
+//        ));
 
     }
 

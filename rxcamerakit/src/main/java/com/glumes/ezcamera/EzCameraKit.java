@@ -32,21 +32,21 @@ public class EzCameraKit {
      *
      * @return
      */
-    public static RequestManager open(int isFront) {
-
-        return new RequestManager(isFront);
-    }
-
-
-    public static RequestManager with(SurfaceView surface) {
-
-        return new RequestManager(0);
-    }
-
-    public static RequestManager with(TextureView textureView) {
-
-        return new RequestManager(0);
-    }
+//    public static RequestManager open(int isFront) {
+//
+//        return new RequestManager(isFront);
+//    }
+//
+//
+//    public static RequestManager with(SurfaceView surface) {
+//
+//        return new RequestManager(0);
+//    }
+//
+//    public static RequestManager with(TextureView textureView) {
+//
+//        return new RequestManager(0);
+//    }
 
     public static <T> RequestManager with(T surface) {
         if (surface instanceof SurfaceHolder) {

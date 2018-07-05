@@ -42,6 +42,10 @@ public class EzCamera {
 
     private static final SparseArrayCompat<String> FLASH_MODES = new SparseArrayCompat<>();
 
+
+    private int mSurfaceType;
+    private Object mDisplaySurface;
+
     static {
         FLASH_MODES.put(Constants.FLASH_OFF, Camera.Parameters.FLASH_MODE_OFF);
         FLASH_MODES.put(Constants.FLASH_ON, Camera.Parameters.FLASH_MODE_ON);
@@ -50,12 +54,15 @@ public class EzCamera {
         FLASH_MODES.put(Constants.FLASH_RED_EYE, Camera.Parameters.FLASH_MODE_RED_EYE);
     }
 
-
     private static class CameraEngineHolder {
         private static EzCamera mInstance = new EzCamera();
     }
 
-    public static EzCamera getInstance() {
+    private EzCamera() {
+
+    }
+
+    static EzCamera getInstance() {
         return CameraEngineHolder.mInstance;
     }
 
@@ -82,11 +89,15 @@ public class EzCamera {
         initParameters();
         adjustCameraParameters();
 
+        mDisplaySurface = surfaceType;
+
         try {
             if (surfaceType instanceof SurfaceHolder) {
-                mCamera.setPreviewDisplay((SurfaceHolder) surfaceType);
+                mSurfaceType = 0;
+                mCamera.setPreviewDisplay((SurfaceHolder) mDisplaySurface);
             } else {
-                mCamera.setPreviewTexture((SurfaceTexture) surfaceType);
+                mSurfaceType = 1;
+                mCamera.setPreviewTexture((SurfaceTexture) mDisplaySurface);
             }
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
@@ -123,8 +134,13 @@ public class EzCamera {
         ));
         setAutoFocus(mRequestOptions.mAutoFocus);
         setFlashMode(mRequestOptions.mFlashMode);
+        setMuteMode(mRequestOptions.mMuteMode);
         mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
                 mRequestOptions.mDisplayOrientation));
+    }
+
+    public void setMuteMode(boolean muteMode) {
+        mCamera.enableShutterSound(true);
     }
 
 
@@ -142,15 +158,8 @@ public class EzCamera {
         return mCamera != null;
     }
 
-    public int getCameraId() {
-        return mCameraId;
-    }
 
-    public Camera.CameraInfo getCameraInfo() {
-        return mCameraInfo;
-    }
-
-    public void changeCameara(int cameraId) {
+    public void changeCamera(int cameraId) {
 
         if (!isCameraOpened()) {
             return;
@@ -158,13 +167,22 @@ public class EzCamera {
         mCamera.setPreviewCallback(null);
         mCamera.stopPreview();
         mCamera.release();
+        mCamera = null;
 
-        openCamera(cameraId);
+        mRequestOptions.mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+
+        if (mSurfaceType == 0) {
+            open(mRequestOptions, (SurfaceHolder) mDisplaySurface);
+        } else {
+            open(mRequestOptions, (SurfaceTexture) mDisplaySurface);
+        }
+
         startPreview();
     }
 
     public void setAspectRatio(AspectRatio aspectRatio) {
-        ConfigOptions.getCameraParameter().setAspectRatio(aspectRatio);
+        mRequestOptions.mAspectRatio = aspectRatio;
+        adjustCameraParameters();
     }
 
     public void setFlashMode(int flash) {
@@ -217,6 +235,17 @@ public class EzCamera {
                 if (pictureTaken != null) {
                     pictureTaken.onPictureTaken(data);
                 }
+            }
+        });
+    }
+
+    public void takePicture() {
+        mCamera.takePicture(null, null, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                Log.d(TAG, "onPictureTaken");
+
+                mCamera.startPreview();
             }
         });
     }
