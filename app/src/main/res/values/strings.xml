@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RxCamera</string>
+    <string name="camera_1_0_api">Camera 1.0 API 使用</string>
+    <string name="camera_2_0_api">Camera 2.0 API 使用</string>
 </resources>

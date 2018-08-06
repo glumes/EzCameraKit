@@ -1,1 +1,1 @@
-include ':app', ':rxcamerakit'
+include ':app', ':ezcamerakit'

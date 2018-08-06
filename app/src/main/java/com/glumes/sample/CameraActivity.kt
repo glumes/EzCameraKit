@@ -32,7 +32,6 @@ class CameraActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.enableFlash)
     }
 
-
     var engine: EzCamera? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +115,6 @@ class CameraActivity : AppCompatActivity() {
                 .open()
 
         engine!!.startPreview()
-
 
     }
 
