@@ -35,7 +35,7 @@ class CameraActivity : AppCompatActivity() {
     var engine: EzCamera? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
+        setContentView(R.layout.activity_camera_layout)
 
         mSurfaceView.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -96,7 +96,7 @@ class CameraActivity : AppCompatActivity() {
     private fun changeAspectRatio() {
         Log.d("EzCamera", "changeAspectRatio")
         engine?.setAspectRatio(AspectRatio.of(4, 3))
-        mSurfaceView.setAspectRatio(10, 10)
+        mSurfaceView.setAspectRatio(3, 4)
     }
 
     private fun takePic() {
@@ -116,6 +116,11 @@ class CameraActivity : AppCompatActivity() {
 
         engine!!.startPreview()
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        engine?.stopPreview()
     }
 
 }

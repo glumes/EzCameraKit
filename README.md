@@ -1,1 +1,1 @@
-A Wrapper Library For Android Camera API
+A Wrapper Library for Android Camera API

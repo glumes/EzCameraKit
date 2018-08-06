@@ -226,6 +226,8 @@ public class EzCamera {
     public void stopPreview() {
         mCamera.setPreviewCallback(null);
         mCamera.stopPreview();
+//        mCamera.release();
+//        mCamera = null;
     }
 
     public void takePicture(final OnPictureTaken pictureTaken) {
