@@ -1,13 +1,11 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import android.graphics.SurfaceTexture;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+
 
 /**
  * Created by glumes on 19/06/2018

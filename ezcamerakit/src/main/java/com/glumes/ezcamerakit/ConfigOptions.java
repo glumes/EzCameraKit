@@ -1,13 +1,13 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import android.hardware.Camera;
 import android.support.v4.util.SparseArrayCompat;
 
-import com.glumes.ezcamera.base.AspectRatio;
-import com.glumes.ezcamera.base.Size;
-import com.glumes.ezcamera.base.SizeMap;
-import com.glumes.ezcamera.utils.CameraUtil;
-import com.glumes.ezcamera.utils.Constants;
+import com.glumes.ezcamerakit.base.AspectRatio;
+import com.glumes.ezcamerakit.base.Size;
+import com.glumes.ezcamerakit.base.SizeMap;
+import com.glumes.ezcamerakit.utils.CameraUtil;
+import com.glumes.ezcamerakit.utils.Constants;
 
 import java.util.List;
 import java.util.Set;

@@ -1,9 +1,9 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import android.hardware.Camera;
 
-import com.glumes.ezcamera.base.AspectRatio;
-import com.glumes.ezcamera.base.Size;
+import com.glumes.ezcamerakit.base.AspectRatio;
+import com.glumes.ezcamerakit.base.Size;
 
 /**
  * @Author glumes

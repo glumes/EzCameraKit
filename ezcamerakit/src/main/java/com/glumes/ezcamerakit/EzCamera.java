@@ -1,4 +1,4 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -8,14 +8,15 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 
-import com.glumes.ezcamera.base.AspectRatio;
-import com.glumes.ezcamera.base.Size;
-import com.glumes.ezcamera.base.SizeMap;
-import com.glumes.ezcamera.utils.CameraUtil;
-import com.glumes.ezcamera.utils.Constants;
+import com.glumes.ezcamerakit.base.AspectRatio;
+import com.glumes.ezcamerakit.base.Size;
+import com.glumes.ezcamerakit.base.SizeMap;
+import com.glumes.ezcamerakit.utils.CameraUtil;
+import com.glumes.ezcamerakit.utils.Constants;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 /**
@@ -110,10 +111,12 @@ public class EzCamera {
     private void initParameters() {
         mPreviewSizes.clear();
         for (Camera.Size size : mParameters.getSupportedPreviewSizes()) {
+            Log.d("EzCamera", "mPreviewSizes width is " + size.width + " height is " + size.height);
             mPreviewSizes.add(new Size(size.width, size.height));
         }
         mPictureSizes.clear();
         for (Camera.Size size : mParameters.getSupportedPictureSizes()) {
+            Log.d("EzCamera", "mPictureSizes width is " + size.width + " height is " + size.height);
             mPictureSizes.add(new Size(size.width, size.height));
         }
         CameraUtil.adjustPreviewSizes(mPreviewSizes, mPictureSizes);
@@ -169,7 +172,7 @@ public class EzCamera {
         mCamera.release();
         mCamera = null;
 
-        mRequestOptions.mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+        mRequestOptions.mCameraId = cameraId;
 
         if (mSurfaceType == 0) {
             open(mRequestOptions, (SurfaceHolder) mDisplaySurface);
@@ -252,5 +255,12 @@ public class EzCamera {
         });
     }
 
+    public Set<AspectRatio> getSupportedAspectRatios() {
+        return mPreviewSizes.ratios();
+    }
+
+    public AspectRatio getAspectRatio() {
+        return mRequestOptions.mAspectRatio;
+    }
 }
 

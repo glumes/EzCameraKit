@@ -1,5 +1,6 @@
 package com.glumes.sample
 
+import android.hardware.Camera
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
@@ -7,30 +8,24 @@ import android.util.Log
 import android.view.OrientationEventListener
 import android.view.SurfaceHolder
 import android.widget.ImageView
-import com.glumes.ezcamera.EzCamera
-import com.glumes.ezcamera.EzCameraKit
-import com.glumes.ezcamera.RequestOptions
-import com.glumes.ezcamera.base.AspectRatio
-import com.glumes.ezcamera.base.Size
-import com.glumes.ezcamera.utils.Constants
+import com.glumes.ezcamerakit.EzCamera
+import com.glumes.ezcamerakit.EzCameraKit
+import com.glumes.ezcamerakit.RequestOptions
+import com.glumes.ezcamerakit.base.AspectRatio
+import com.glumes.ezcamerakit.base.Size
+import com.glumes.ezcamerakit.utils.Constants
 
-class CameraActivity : AppCompatActivity() {
+class CameraActivity : AppCompatActivity(), AspectRatioFragment.Listener {
+
 
     private val mSurfaceView by lazy {
         findViewById<AutoFitSurfaceView>(R.id.surfaceView)
     }
-    private val mTakePic by lazy {
-        findViewById<FloatingActionButton>(R.id.takePic)
-    }
-    private val mSwitchCamera by lazy {
-        findViewById<ImageView>(R.id.switchCamera)
-    }
-    private val mAspectRatio by lazy {
-        findViewById<ImageView>(R.id.aspectRatio)
-    }
-    private val mEnableFlash by lazy {
-        findViewById<ImageView>(R.id.enableFlash)
-    }
+    private var mCameraId = 0
+
+    private val FRAGMENT_PERMISSION = "permission"
+
+    private val TAG = "EzCamera"
 
     var engine: EzCamera? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,64 +47,79 @@ class CameraActivity : AppCompatActivity() {
 
         })
 
-        var mOrientationListener = object : OrientationEventListener(this) {
+//        var mOrientationListener = object : OrientationEventListener(this) {
+//
+//            override fun onOrientationChanged(orientation: Int) {
+//                engine?.setDisplayOrientation(orientation)
+//            }
+//        }
+//
+//        if (mOrientationListener.canDetectOrientation()) {
+//            mOrientationListener.enable()
+//        } else {
+//            mOrientationListener.disable()
+//        }
 
-            override fun onOrientationChanged(orientation: Int) {
-                engine?.setDisplayOrientation(orientation)
-            }
-        }
 
-        if (mOrientationListener.canDetectOrientation()) {
-            mOrientationListener.enable()
-        } else {
-            mOrientationListener.disable()
-        }
-
-
-        mTakePic.setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.takePic).setOnClickListener {
             takePic()
         }
 
-        mAspectRatio.setOnClickListener {
+        findViewById<ImageView>(R.id.aspectRatio).setOnClickListener {
+
             changeAspectRatio()
         }
 
-        mEnableFlash.setOnClickListener {
+        findViewById<ImageView>(R.id.enableFlash).setOnClickListener {
             enableFlash()
         }
 
-        mSwitchCamera.setOnClickListener {
+        findViewById<ImageView>(R.id.switchCamera).setOnClickListener {
             switchCamera()
         }
     }
 
     private fun switchCamera() {
-        Log.d("EzCamera", "switch camera")
-        engine?.changeCamera(0)
+        Log.d(TAG, "switch camera")
+        mCameraId = if (mCameraId == 0) 1 else 0
+        engine?.changeCamera(mCameraId)
     }
 
     private fun enableFlash() {
-        Log.d("EzCamera", "enableFlash")
+        Log.d(TAG, "enableFlash")
         engine?.setFlashMode(Constants.FLASH_ON)
     }
 
     private fun changeAspectRatio() {
-        Log.d("EzCamera", "changeAspectRatio")
-        engine?.setAspectRatio(AspectRatio.of(4, 3))
-        mSurfaceView.setAspectRatio(3, 4)
+        Log.d(TAG, "changeAspectRatio")
+        showAspectDialog()
+    }
+
+    private fun showAspectDialog() {
+        val fragmentManager = supportFragmentManager
+        val ratios = engine!!.supportedAspectRatios
+        val currentAspect = engine!!.aspectRatio
+
+        AspectRatioFragment.newInstance(ratios, currentAspect).show(fragmentManager, FRAGMENT_PERMISSION)
     }
 
     private fun takePic() {
-        Log.d("EzCamera", "takePic")
+        Log.d(TAG, "takePic")
         engine?.takePicture()
     }
 
     fun startPreview(holder: SurfaceHolder?, width: Int, height: Int) {
 
+        if (engine != null) {
+            return
+        }
+
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+
         engine = EzCameraKit.with(mSurfaceView.holder)
                 .apply(RequestOptions
                         .openFrontCamera()
-                        .size(Size(1080, 1920))
+                        .size(Size(width, height))
                         .setAspectRatio(AspectRatio.of(16, 9))
                         .displayOrientation(0))
                 .open()
@@ -123,4 +133,10 @@ class CameraActivity : AppCompatActivity() {
         engine?.stopPreview()
     }
 
+    override fun onAspectRatioSelected(ratio: AspectRatio) {
+        Log.d(TAG, "x is " + ratio.x + " y is " + ratio.y)
+        engine?.aspectRatio = ratio
+        mSurfaceView.setAspectRatio(ratio.y, ratio.x)
+
+    }
 }

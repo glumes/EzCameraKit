@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.glumes.ezcamera.base;
+package com.glumes.ezcamerakit.base;
 
 import android.support.annotation.NonNull;
 

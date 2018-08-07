@@ -1,4 +1,4 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import org.junit.Test;
 

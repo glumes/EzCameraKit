@@ -4,10 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.SurfaceHolder
 import android.widget.Button
-import com.glumes.ezcamera.EzCameraKit
-import com.glumes.ezcamera.RequestOptions
-import com.glumes.ezcamera.base.AspectRatio
-import com.glumes.ezcamera.base.Size
+import com.glumes.ezcamerakit.EzCameraKit
+import com.glumes.ezcamerakit.RequestOptions
+import com.glumes.ezcamerakit.base.AspectRatio
+import com.glumes.ezcamerakit.base.Size
 
 class Camera2Activity : AppCompatActivity() {
 

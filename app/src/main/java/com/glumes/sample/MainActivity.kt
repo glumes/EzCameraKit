@@ -9,8 +9,8 @@ import android.view.SurfaceView
 import android.widget.Button
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.glumes.ezcamera.EzCamera
-import com.glumes.ezcamera.EzCameraKit
+import com.glumes.ezcamerakit.EzCamera
+import com.glumes.ezcamerakit.EzCameraKit
 import com.glumes.sample.util.PermissionsUtils
 
 class MainActivity : AppCompatActivity() {

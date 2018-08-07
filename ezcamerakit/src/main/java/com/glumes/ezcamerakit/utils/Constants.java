@@ -1,6 +1,6 @@
-package com.glumes.ezcamera.utils;
+package com.glumes.ezcamerakit.utils;
 
-import com.glumes.ezcamera.base.AspectRatio;
+import com.glumes.ezcamerakit.base.AspectRatio;
 
 /**
  * Created by glumes on 02/07/2018

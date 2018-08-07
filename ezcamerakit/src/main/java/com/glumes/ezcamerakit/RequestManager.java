@@ -1,4 +1,4 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import android.graphics.SurfaceTexture;
 import android.view.SurfaceHolder;

@@ -1,4 +1,4 @@
-package com.glumes.ezcamera;
+package com.glumes.ezcamerakit;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
