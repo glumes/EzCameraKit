@@ -10,6 +10,7 @@ import android.view.Display
 import android.view.OrientationEventListener
 import android.view.SurfaceHolder
 import android.widget.ImageView
+import com.glumes.ezcamerakit.CameraKitListenerAdapter
 import com.glumes.ezcamerakit.EzCamera
 import com.glumes.ezcamerakit.EzCameraKit
 import com.glumes.ezcamerakit.RequestOptions
@@ -80,7 +81,6 @@ class CameraActivity : AppCompatActivity(), AspectRatioFragment.Listener {
         })
 
 
-
 //        var mOrientationListener = object : OrientationEventListener(this) {
 //
 //            override fun onOrientationChanged(orientation: Int) {
@@ -143,20 +143,14 @@ class CameraActivity : AppCompatActivity(), AspectRatioFragment.Listener {
     }
 
     fun startPreview(holder: SurfaceHolder?, width: Int, height: Int) {
-
-        if (engine != null) {
-            return
-        }
-
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
 
         engine = EzCameraKit.with(mSurfaceView.holder)
                 .apply(RequestOptions
                         .openFrontCamera()
                         .size(Size(width, height))
-                        .setAspectRatio(AspectRatio.of(16, 9))
-                        .displayOrientation(0))
-                .open()
+                        .setListener(CameraKitListenerAdapter())
+                ).open()
 
         engine!!.startPreview()
 

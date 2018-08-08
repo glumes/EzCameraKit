@@ -3,9 +3,6 @@ package com.glumes.ezcamerakit;
 
 public class RequestBuilder<T> {
 
-
-    private ConfigOptions mConfigOptions;
-
     private RequestOptions mRequestOptions;
 
     private T mDisplaySurface;

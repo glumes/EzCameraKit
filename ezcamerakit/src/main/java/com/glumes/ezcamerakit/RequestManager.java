@@ -13,8 +13,6 @@ public class RequestManager<T> {
 
     private T mDisplaySurface;
 
-    private RequestOptions mDefaultRequestOptions;
-
     RequestManager(T surface) {
         mDisplaySurface = surface;
     }

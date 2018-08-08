@@ -4,13 +4,14 @@ import android.hardware.Camera;
 
 import com.glumes.ezcamerakit.base.AspectRatio;
 import com.glumes.ezcamerakit.base.Size;
+import com.glumes.ezcamerakit.utils.Constants;
 
 
 public class RequestOptions {
 
     int mCameraId;
 
-    AspectRatio mAspectRatio;
+    AspectRatio mAspectRatio = Constants.DEFAULT_ASPECT_RATIO;
 
     int mDisplayOrientation;
 
@@ -20,11 +21,12 @@ public class RequestOptions {
 
     boolean mIsEnableFlash;
 
-    int mFlashMode;
+    public int mFlashMode;
 
-    OnPictureTaken mOnPictureTaken;
 
-    boolean mAutoFocus;
+    public boolean mAutoFocus;
+
+    CameraKitListener mListener;
 
     RequestOptions(int cameraId) {
         mCameraId = cameraId;
@@ -73,8 +75,9 @@ public class RequestOptions {
         return this;
     }
 
-    public RequestOptions callback(OnPictureTaken callback) {
-        mOnPictureTaken = callback;
+
+    public RequestOptions setListener(CameraKitListener listener) {
+        mListener = listener;
         return this;
     }
 }

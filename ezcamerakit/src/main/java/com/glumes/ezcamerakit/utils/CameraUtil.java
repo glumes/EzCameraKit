@@ -33,11 +33,11 @@ public class CameraUtil {
     }
 
     public static Size calculatePreviewSize(SortedSet<Size> sizes, int surfaceWidth, int surfaceHeight, int displayOrientation) {
-        int desiredWidth = surfaceWidth;
-        int desiredHeight = surfaceHeight;
+        int desiredWidth = surfaceHeight;
+        int desiredHeight = surfaceWidth;
         if (isLandscape(displayOrientation)) {
-            desiredWidth = surfaceHeight;
-            desiredHeight = surfaceWidth;
+            desiredWidth = surfaceWidth;
+            desiredHeight = surfaceHeight;
         }
         Size result = null;
         for (Size size : sizes) { // Iterate from small to large

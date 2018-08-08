@@ -11,6 +11,8 @@ import android.view.TextureView;
 import com.glumes.ezcamerakit.base.AspectRatio;
 import com.glumes.ezcamerakit.base.Size;
 import com.glumes.ezcamerakit.base.SizeMap;
+import com.glumes.ezcamerakit.helper.AutoFocusHelper;
+import com.glumes.ezcamerakit.helper.FlashModeHelper;
 import com.glumes.ezcamerakit.utils.CameraUtil;
 import com.glumes.ezcamerakit.utils.Constants;
 
@@ -26,10 +28,6 @@ public class EzCamera {
 
     private Camera mCamera = null;
 
-    private Camera.PreviewCallback mPreviewCallback;
-
-    private int mCameraId;
-
     private Camera.CameraInfo mCameraInfo = new Camera.CameraInfo();
 
     private static final String TAG = "EzCamera";
@@ -41,18 +39,12 @@ public class EzCamera {
     private final SizeMap mPreviewSizes = new SizeMap();
     private final SizeMap mPictureSizes = new SizeMap();
 
-    private static final SparseArrayCompat<String> FLASH_MODES = new SparseArrayCompat<>();
 
     private int mSurfaceType;
     private Object mDisplaySurface;
 
-    static {
-        FLASH_MODES.put(Constants.FLASH_OFF, Camera.Parameters.FLASH_MODE_OFF);
-        FLASH_MODES.put(Constants.FLASH_ON, Camera.Parameters.FLASH_MODE_ON);
-        FLASH_MODES.put(Constants.FLASH_TORCH, Camera.Parameters.FLASH_MODE_TORCH);
-        FLASH_MODES.put(Constants.FLASH_AUTO, Camera.Parameters.FLASH_MODE_AUTO);
-        FLASH_MODES.put(Constants.FLASH_RED_EYE, Camera.Parameters.FLASH_MODE_RED_EYE);
-    }
+    private CameraKitListener mListener;
+
 
     private static class CameraEngineHolder {
         private static EzCamera mInstance = new EzCamera();
@@ -66,27 +58,17 @@ public class EzCamera {
         return CameraEngineHolder.mInstance;
     }
 
-//    public boolean openCamera(int cameraId) {
-//        mCameraId = cameraId;
-//        initCameraInfo();
-//        mCamera = Camera.open(cameraId);
-//        return mCamera != null;
-//    }
-
-//    public boolean open(RequestOptions requestOptions) {
-//        mRequestOptions = requestOptions;
-//        mCamera = Camera.open(mRequestOptions.mCameraId);
-//        return true;
-//    }
 
     public <T> boolean open(RequestOptions requestOptions, T surfaceType) {
 
         mRequestOptions = requestOptions;
         mCamera = Camera.open(mRequestOptions.mCameraId);
-        Camera.getCameraInfo(mCameraId, mCameraInfo);
+        Camera.getCameraInfo(mRequestOptions.mCameraId, mCameraInfo);
         mParameters = mCamera.getParameters();
         initParameters();
         adjustCameraParameters();
+
+        mListener = requestOptions.mListener;
 
         mDisplaySurface = surfaceType;
 
@@ -103,18 +85,20 @@ public class EzCamera {
             return false;
         }
 
+        if (mListener != null) {
+            mListener.onCameraOpened();
+        }
+
         return true;
     }
 
     private void initParameters() {
         mPreviewSizes.clear();
         for (Camera.Size size : mParameters.getSupportedPreviewSizes()) {
-//            Log.d("EzCamera", "mPreviewSizes width is " + size.width + " height is " + size.height);
             mPreviewSizes.add(new Size(size.width, size.height));
         }
         mPictureSizes.clear();
         for (Camera.Size size : mParameters.getSupportedPictureSizes()) {
-//            Log.d("EzCamera", "mPictureSizes width is " + size.width + " height is " + size.height);
             mPictureSizes.add(new Size(size.width, size.height));
         }
         CameraUtil.adjustPreviewSizes(mPreviewSizes, mPictureSizes);
@@ -131,11 +115,12 @@ public class EzCamera {
         mParameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
         mParameters.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
         mParameters.setRotation(CameraUtil.calculateCameraRotation(
-                mCameraId, mCameraInfo.orientation, mRequestOptions.mDisplayOrientation
+                mRequestOptions.mCameraId, mCameraInfo.orientation, mRequestOptions.mDisplayOrientation
         ));
         setAutoFocus(mRequestOptions.mAutoFocus);
         setFlashMode(mRequestOptions.mFlashMode);
         setMuteMode(mRequestOptions.mMuteMode);
+
         mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
                 mRequestOptions.mDisplayOrientation));
     }
@@ -144,21 +129,9 @@ public class EzCamera {
         mCamera.enableShutterSound(true);
     }
 
-
-    private void initCameraInfo() {
-        int count = Camera.getNumberOfCameras();
-        for (int i = 0; i < count; i++) {
-            Camera.getCameraInfo(i, mCameraInfo);
-            if (mCameraInfo.facing == mCameraId) {
-                mCameraId = i;
-            }
-        }
-    }
-
     public boolean isCameraOpened() {
         return mCamera != null;
     }
-
 
     public void changeCamera(int cameraId) {
 
@@ -187,67 +160,58 @@ public class EzCamera {
     }
 
     public void setFlashMode(int flash) {
-        mRequestOptions.mFlashMode = flash;
-        List<String> modes = mParameters.getSupportedFlashModes();
-        String mode = FLASH_MODES.get(flash);
-        if (modes != null && modes.contains(mode)) {
-            mParameters.setFlashMode(mode);
-            mRequestOptions.mFlashMode = flash;
-        }
-        String currentMode = FLASH_MODES.get(mRequestOptions.mFlashMode);
-        if (modes == null || !modes.contains(currentMode)) {
-            mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            mRequestOptions.mFlashMode = Constants.FLASH_OFF;
-        }
+        FlashModeHelper.setFlashMode(flash, mRequestOptions, mParameters);
     }
 
     public void setAutoFocus(boolean autoFocus) {
-        mRequestOptions.mAutoFocus = autoFocus;
-        final List<String> modes = mParameters.getSupportedFocusModes();
-        if (autoFocus && modes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        } else if (modes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
-            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
-        } else if (modes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
-            mParameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
-        } else {
-            mParameters.setFocusMode(modes.get(0));
-        }
+        AutoFocusHelper.setAutoFocus(autoFocus, mRequestOptions, mParameters);
     }
 
     public void setDisplayOrientation(int degrees) {
+
+        mParameters.setRotation(CameraUtil.calculateCameraRotation(
+                mRequestOptions.mCameraId, mCameraInfo.orientation, mRequestOptions.mDisplayOrientation
+        ));
+
+        mCamera.setParameters(mParameters);
+
         mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
-                ConfigOptions.mDisplayOrientation));
+                mRequestOptions.mDisplayOrientation));
     }
 
     public void startPreview() {
         mCamera.startPreview();
+        if (mListener != null) {
+            mListener.onCameraPreview();
+        }
+        mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+            @Override
+            public void onPreviewFrame(byte[] data, Camera camera) {
+                if (mListener != null) {
+                    mListener.onPreviewCallback(data);
+                }
+                camera.addCallbackBuffer(data);
+            }
+        });
     }
 
     public void stopPreview() {
         mCamera.setPreviewCallback(null);
         mCamera.stopPreview();
-//        mCamera.release();
-//        mCamera = null;
-    }
-
-    public void takePicture(final OnPictureTaken pictureTaken) {
-        mCamera.takePicture(null, null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                if (pictureTaken != null) {
-                    pictureTaken.onPictureTaken(data);
-                }
-            }
-        });
+        mCamera.release();
+        mCamera = null;
+        if (mListener != null) {
+            mListener.onCameraClosed();
+        }
     }
 
     public void takePicture() {
         mCamera.takePicture(null, null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                Log.d(TAG, "onPictureTaken");
-
+                if (mListener != null) {
+                    mListener.onPictureTaken(data);
+                }
                 mCamera.startPreview();
             }
         });
