@@ -24,7 +24,7 @@ import java.util.TreeSet;
 
 /**
  * 从宽高比到图像size的映射，key是宽高比，value是满足这个宽高比的图像size集合
- *
+ * <p>
  * A collection class that automatically groups {@link Size}s by their {@link AspectRatio}s.
  */
 public class SizeMap {
@@ -56,9 +56,6 @@ public class SizeMap {
         return true;
     }
 
-    /**
-     * Removes the specified aspect ratio and all sizes associated with it.
-     */
     public void remove(AspectRatio ratio) {
         mRatios.remove(ratio);
     }
@@ -83,7 +80,7 @@ public class SizeMap {
     public String toString() {
         StringBuilder builder = new StringBuilder("");
         Set<AspectRatio> ratioSet = ratios();
-        for (AspectRatio ratio: ratioSet) {
+        for (AspectRatio ratio : ratioSet) {
             SortedSet<Size> sizeSet = sizes(ratio);
             builder.append("[").append(ratio.toString()).append("]:{");
             for (Size size : sizeSet) {

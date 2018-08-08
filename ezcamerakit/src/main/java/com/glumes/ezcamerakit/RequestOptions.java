@@ -5,9 +5,7 @@ import android.hardware.Camera;
 import com.glumes.ezcamerakit.base.AspectRatio;
 import com.glumes.ezcamerakit.base.Size;
 
-/**
- * @Author glumes
- */
+
 public class RequestOptions {
 
     int mCameraId;

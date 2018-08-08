@@ -14,10 +14,6 @@ import java.util.Set;
 import java.util.SortedSet;
 
 
-/**
- * 主要就是针对 Parameters 进行参数设置，设置结束之后，直接传递给相机设置 setParameters 就行了
- */
-
 public class ConfigOptions {
 
     private static Camera.Parameters mParameters;

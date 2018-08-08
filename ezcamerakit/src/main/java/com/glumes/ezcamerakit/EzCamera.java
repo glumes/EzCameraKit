@@ -43,7 +43,6 @@ public class EzCamera {
 
     private static final SparseArrayCompat<String> FLASH_MODES = new SparseArrayCompat<>();
 
-
     private int mSurfaceType;
     private Object mDisplaySurface;
 
@@ -67,19 +66,18 @@ public class EzCamera {
         return CameraEngineHolder.mInstance;
     }
 
-    public boolean openCamera(int cameraId) {
-        mCameraId = cameraId;
-        initCameraInfo();
-        mCamera = Camera.open(cameraId);
-        return mCamera != null;
-    }
+//    public boolean openCamera(int cameraId) {
+//        mCameraId = cameraId;
+//        initCameraInfo();
+//        mCamera = Camera.open(cameraId);
+//        return mCamera != null;
+//    }
 
-    public boolean open(RequestOptions requestOptions) {
-        mRequestOptions = requestOptions;
-        mCamera = Camera.open(mRequestOptions.mCameraId);
-
-        return true;
-    }
+//    public boolean open(RequestOptions requestOptions) {
+//        mRequestOptions = requestOptions;
+//        mCamera = Camera.open(mRequestOptions.mCameraId);
+//        return true;
+//    }
 
     public <T> boolean open(RequestOptions requestOptions, T surfaceType) {
 
@@ -111,12 +109,12 @@ public class EzCamera {
     private void initParameters() {
         mPreviewSizes.clear();
         for (Camera.Size size : mParameters.getSupportedPreviewSizes()) {
-            Log.d("EzCamera", "mPreviewSizes width is " + size.width + " height is " + size.height);
+//            Log.d("EzCamera", "mPreviewSizes width is " + size.width + " height is " + size.height);
             mPreviewSizes.add(new Size(size.width, size.height));
         }
         mPictureSizes.clear();
         for (Camera.Size size : mParameters.getSupportedPictureSizes()) {
-            Log.d("EzCamera", "mPictureSizes width is " + size.width + " height is " + size.height);
+//            Log.d("EzCamera", "mPictureSizes width is " + size.width + " height is " + size.height);
             mPictureSizes.add(new Size(size.width, size.height));
         }
         CameraUtil.adjustPreviewSizes(mPreviewSizes, mPictureSizes);

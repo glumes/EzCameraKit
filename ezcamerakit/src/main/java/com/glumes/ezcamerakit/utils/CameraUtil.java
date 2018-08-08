@@ -15,7 +15,11 @@ import java.util.SortedSet;
  */
 public class CameraUtil {
 
-
+    /**
+     *
+     * @param previewSizes
+     * @param pictureSizes
+     */
     public static void adjustPreviewSizes(SizeMap previewSizes, SizeMap pictureSizes) {
         List<AspectRatio> ratiosToDelete = new ArrayList<>();
         for (AspectRatio ratio : previewSizes.ratios()) {
