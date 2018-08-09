@@ -38,6 +38,11 @@
 ```
 
 
+## 相关文章
+
+1. [Android Camera 模型及 API 接口演变](https://glumes.com/post/android/android-camrea-api-evolution/)
+2. [Android 相机开发中的尺寸和方向问题](https://glumes.com/post/android/android-camera-aspect-ratio--and-orientation/)
+
 ## 更新日志
 
 [CHANGELOG](https://github.com/glumes/EzCameraKit/blob/master/CHANGELOG.md)
