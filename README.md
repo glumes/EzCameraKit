@@ -2,7 +2,7 @@
 
 对 Android Camera API 的封装:
 
-![](https://github.com/glumes/EzCameraKit/tree/master/art/sample.jpeg)
+![](https://ws1.sinaimg.cn/large/bc32fd77gy1fu3ea3kqmqj20u01hc45w.jpg)
 
  打开相机并开始预览：
 
