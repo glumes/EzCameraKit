@@ -1,6 +1,8 @@
 # EzCameraKit
 
-对 Android Camera API 的封装。
+对 Android Camera API 的封装:
+
+![](https://github.com/glumes/EzCameraKit/tree/master/art/sample.jpeg)
 
  打开相机并开始预览：
 
