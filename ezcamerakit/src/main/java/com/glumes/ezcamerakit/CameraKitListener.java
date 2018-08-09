@@ -1,8 +1,5 @@
 package com.glumes.ezcamerakit;
 
-
-import android.hardware.Camera;
-
 public interface CameraKitListener {
 
     void onPictureTaken(byte[] data);

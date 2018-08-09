@@ -2,11 +2,8 @@ package com.glumes.ezcamerakit;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.TextureView;
 
 import com.glumes.ezcamerakit.base.AspectRatio;
 import com.glumes.ezcamerakit.base.Size;
@@ -14,10 +11,8 @@ import com.glumes.ezcamerakit.base.SizeMap;
 import com.glumes.ezcamerakit.helper.AutoFocusHelper;
 import com.glumes.ezcamerakit.helper.FlashModeHelper;
 import com.glumes.ezcamerakit.utils.CameraUtil;
-import com.glumes.ezcamerakit.utils.Constants;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -67,6 +62,7 @@ public class EzCamera {
         mParameters = mCamera.getParameters();
         initParameters();
         adjustCameraParameters();
+        mParameters.setPreviewFormat(mRequestOptions.mPixelFormat);
 
         mListener = requestOptions.mListener;
 

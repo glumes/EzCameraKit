@@ -1,5 +1,6 @@
 package com.glumes.ezcamerakit;
 
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 
 import com.glumes.ezcamerakit.base.AspectRatio;
@@ -17,14 +18,15 @@ public class RequestOptions {
 
     boolean mMuteMode;
 
-    Size mSize;
+    Size mSize = new Size(1080, 1920);
 
     boolean mIsEnableFlash;
 
     public int mFlashMode;
 
-
     public boolean mAutoFocus;
+
+    public int mPixelFormat = ImageFormat.NV21;
 
     CameraKitListener mListener;
 
@@ -75,6 +77,10 @@ public class RequestOptions {
         return this;
     }
 
+    public RequestOptions setPixelFormat(int format) {
+        mPixelFormat = format;
+        return this;
+    }
 
     public RequestOptions setListener(CameraKitListener listener) {
         mListener = listener;
