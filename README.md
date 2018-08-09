@@ -2,7 +2,7 @@
 
 对 Android Camera API 的封装:
 
-![](https://ws1.sinaimg.cn/large/bc32fd77gy1fu3ea3kqmqj20u01hc45w.jpg)
+![](https://res.cloudinary.com/glumes-com/image/upload/c_scale,h_720/v1533793475/code/WechatIMG68.jpg)
 
  打开相机并开始预览：
 
