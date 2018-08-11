@@ -61,13 +61,10 @@ class CameraActivity : AppCompatActivity(), AspectRatioFragment.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera_layout)
 
-
-
-
         mSurfaceView.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
                 Log.d(TAG, "width is $width Height is $height")
-                startPreview(holder, width, height)
+                startPreview(holder, 1280, 720)
             }
 
             override fun surfaceDestroyed(holder: SurfaceHolder?) {
@@ -115,6 +112,7 @@ class CameraActivity : AppCompatActivity(), AspectRatioFragment.Listener {
 
     private fun switchCamera() {
         Log.d(TAG, "switch camera")
+
         mCameraId = if (mCameraId == 0) 1 else 0
         engine?.changeCamera(mCameraId)
     }
@@ -143,12 +141,13 @@ class CameraActivity : AppCompatActivity(), AspectRatioFragment.Listener {
     }
 
     fun startPreview(holder: SurfaceHolder?, width: Int, height: Int) {
-        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK
 
-        engine = EzCameraKit.with(mSurfaceView.holder)
+        engine = EzCameraKit.with(holder)
                 .apply(RequestOptions
-                        .openFrontCamera()
-                        .size(Size(width, height))
+                        .openBackCamera()
+                        .setAspectRatio(AspectRatio.of(16, 9))
+                        .size(width, height)
                         .setListener(CameraKitListenerAdapter())
                 ).open()
 

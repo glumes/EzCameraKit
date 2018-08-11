@@ -21,7 +21,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 27
         versionCode 1
-        versionName "0.1"
+        versionName "0.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -52,7 +52,7 @@ publish {
     userOrg = 'glumeslib'
     groupId = 'com.glumes'
     artifactId = 'ezcamerakit'
-    publishVersion = '0.0.2'
+    publishVersion = '0.0.3'
     desc = 'A Wrapper Library for Android Camera API .'
     website = 'https://github.com/glumes/EzCameraKit'
 }

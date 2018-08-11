@@ -109,6 +109,9 @@ public class EzCamera {
         Size pictureSize = CameraUtil.calculatePictureSize(mPictureSizes, mRequestOptions.mAspectRatio);
 
         mParameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
+
+        Log.d("EzCamera", "width is " + previewSize.getWidth() + " height is " + previewSize.getHeight());
+
         mParameters.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
         mParameters.setRotation(CameraUtil.calculateCameraRotation(
                 mRequestOptions.mCameraId, mCameraInfo.orientation, mRequestOptions.mDisplayOrientation
@@ -219,6 +222,14 @@ public class EzCamera {
 
     public AspectRatio getAspectRatio() {
         return mRequestOptions.mAspectRatio;
+    }
+
+    public Camera.Size getPreviewSize() {
+        return mParameters.getPreviewSize();
+    }
+
+    public Camera.Size getPictureSize() {
+        return mParameters.getPictureSize();
     }
 }
 

@@ -42,8 +42,8 @@ public class RequestOptions {
         return new RequestOptions(Camera.CameraInfo.CAMERA_FACING_FRONT);
     }
 
-    public RequestOptions size(Size size) {
-        mSize = size;
+    public RequestOptions size(int width, int height) {
+        mSize = new Size(width, height);
         return this;
     }
 
