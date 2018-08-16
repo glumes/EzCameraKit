@@ -189,7 +189,6 @@ public class EzCamera {
                 if (mListener != null) {
                     mListener.onPreviewCallback(data);
                 }
-                camera.addCallbackBuffer(data);
             }
         });
     }

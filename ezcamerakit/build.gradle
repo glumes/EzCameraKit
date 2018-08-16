@@ -52,7 +52,7 @@ publish {
     userOrg = 'glumeslib'
     groupId = 'com.glumes'
     artifactId = 'ezcamerakit'
-    publishVersion = '0.0.3'
+    publishVersion = '0.0.4'
     desc = 'A Wrapper Library for Android Camera API .'
     website = 'https://github.com/glumes/EzCameraKit'
 }
