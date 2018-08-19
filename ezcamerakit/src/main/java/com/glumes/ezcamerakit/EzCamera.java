@@ -40,7 +40,6 @@ public class EzCamera {
 
     private CameraKitListener mListener;
 
-
     private static class CameraEngineHolder {
         private static EzCamera mInstance = new EzCamera();
     }
@@ -52,7 +51,6 @@ public class EzCamera {
     static EzCamera getInstance() {
         return CameraEngineHolder.mInstance;
     }
-
 
     public <T> boolean open(RequestOptions requestOptions, T surfaceType) {
 
@@ -109,8 +107,6 @@ public class EzCamera {
         Size pictureSize = CameraUtil.calculatePictureSize(mPictureSizes, mRequestOptions.mAspectRatio);
 
         mParameters.setPreviewSize(previewSize.getWidth(), previewSize.getHeight());
-
-        Log.d("EzCamera", "width is " + previewSize.getWidth() + " height is " + previewSize.getHeight());
 
         mParameters.setPictureSize(pictureSize.getWidth(), pictureSize.getHeight());
         mParameters.setRotation(CameraUtil.calculateCameraRotation(
@@ -179,10 +175,6 @@ public class EzCamera {
     }
 
     public void startPreview() {
-        mCamera.startPreview();
-        if (mListener != null) {
-            mListener.onCameraPreview();
-        }
         mCamera.setPreviewCallback(new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] data, Camera camera) {
@@ -191,6 +183,10 @@ public class EzCamera {
                 }
             }
         });
+        mCamera.startPreview();
+        if (mListener != null) {
+            mListener.onCameraPreview();
+        }
     }
 
     public void stopPreview() {
