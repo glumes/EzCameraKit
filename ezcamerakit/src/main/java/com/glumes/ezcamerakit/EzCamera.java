@@ -58,9 +58,11 @@ public class EzCamera {
         mCamera = Camera.open(mRequestOptions.mCameraId);
         Camera.getCameraInfo(mRequestOptions.mCameraId, mCameraInfo);
         mParameters = mCamera.getParameters();
+
+        mParameters.setPreviewFormat(mRequestOptions.mPixelFormat);
         initParameters();
         adjustCameraParameters();
-        mParameters.setPreviewFormat(mRequestOptions.mPixelFormat);
+        mCamera.setParameters(mParameters);
 
         mListener = requestOptions.mListener;
 
@@ -152,6 +154,7 @@ public class EzCamera {
     public void setAspectRatio(AspectRatio aspectRatio) {
         mRequestOptions.mAspectRatio = aspectRatio;
         adjustCameraParameters();
+        mCamera.setParameters(mParameters);
     }
 
     public void setFlashMode(int flash) {
@@ -168,10 +171,10 @@ public class EzCamera {
                 mRequestOptions.mCameraId, mCameraInfo.orientation, mRequestOptions.mDisplayOrientation
         ));
 
-        mCamera.setParameters(mParameters);
-
         mCamera.setDisplayOrientation(CameraUtil.calculateDisplayOrientation(mCameraInfo.facing, mCameraInfo.orientation,
                 mRequestOptions.mDisplayOrientation));
+
+        mCamera.setParameters(mParameters);
     }
 
     public void startPreview() {
